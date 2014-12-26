@@ -11,7 +11,13 @@
       <div class="navbar-inner">
         <div class="container">
             <ul class="nav">
-              <li><a href="/">Nav Item</a></li>
+              <li><a href="/">
+                <% unless session[:user_name] == '' %>
+                 <%= session[:user_name] %>'s cash: $<%=session[:bank] %>
+                <% else %>
+                  Welcome!
+                <% end %>
+                </a></li>
             </ul>
         </div>
       </div>
