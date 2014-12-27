@@ -1,0 +1,17 @@
+Dealer's hand: <%= session[:dealer_hand] %>
+Dealer's total: <%= session[:dealer_total] %>
+<br/>
+<br/>
+Player's hand: <%= session[:player_hand] %>
+Player's total: <%= session[:player_total] %>
+<br/>
+<br/>
+Would you like to play again?
+<br/>
+
+<form method='post', action='/again'>
+    <input type='radio', name='yes_or_no', value="yes", checked/>Yes
+    <input type='radio', name='yes_or_no', value="no"/>No
+    <br/>
+    <input type='submit', class='btn' />
+</form>

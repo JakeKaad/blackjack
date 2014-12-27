@@ -1,12 +1,13 @@
-Dealer's hand: <%= session[:dealer_hand] %>
-Dealer's total: <%= session[:dealer_total] %>
+Dealer's hand: <%= session[:dealer_hand].first %>
 <br/>
 <br/>
 Player's hand: <%= session[:player_hand] %>
 Player's total: <%= session[:player_total] %>
 
-<form action="hit", method='post'>
+
+<form action="/hit_or_stay", method='post'>
   <input type='radio', name='hit_or_stay', value='hit', checked/>Hit
   <input type='radio', name='hit_or_stay', value='stay'/>Stay
+  <br/>
   <input type='submit', class='btn'></input>
 </form>
