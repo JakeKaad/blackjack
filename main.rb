@@ -36,7 +36,7 @@ end
 def calculate_total(hand)
   total = 0
   
-  card_values = hand.map { |card| card[1] }
+  card_values = hand.map { |card| card[0] }
   
   card_values.each do |value|
     if value == "Ace"
@@ -76,12 +76,32 @@ def game_over
   redirect '/'
 end
 
-def bust?
+def either_players_bust?
   session[:player_total] > 21 || session[:dealer_total] > 21
 end
 
+def player_bust?
+  session[:player_total] > 21
+end
+  
 def blackjack?
  session[:player_hand].size == 2 && session[:player_total] == 21
+end
+
+def dealer_blackjack?
+  session[:dealer_hand].size == 2 && session[:dealer_total] == 21
+end
+
+def find_winner
+  if player_bust? || dealer_blackjack?
+    "Dealer"
+  elsif blackjack? || either_players_bust?
+    session[:user_name]
+  elsif session[:dealer_total] >= session[:player_total]
+    "Dealer"
+  elsif session[:dealer_total] < session[:player_total]
+    session[:user_name]
+  end
 end
 
 get '/' do
@@ -111,7 +131,7 @@ get '/game' do
   require_user_name
   deal_opening_hands if session[:player_hand].empty?
   evaluate_totals(session[:player_hand], session[:dealer_hand])
-  redirect '/game_over' if players_finished? #|| bust? || blackjack?
+  redirect '/find_winner' if players_finished? || either_players_bust? || blackjack?
   redirect '/dealer_turn' if session[:dealer_turn]
   erb :game
 end
@@ -133,6 +153,12 @@ end
 
 get '/dealer_turn' do
   erb :dealer_turn
+end
+
+get '/find_winner' do
+  session[:winner] = find_winner
+  session[:bank] += (session[:bet] * 2) if session[:winner] == session[:user_name]
+  redirect '/game_over'
 end
 
 get '/game_over' do

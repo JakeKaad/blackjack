@@ -8,10 +8,10 @@ Player's total: <%= session[:player_total] %>
 <br/>
 Would you like to play again?
 <br/>
-
+<%= session[:winner] %> wins!
 <form method='post', action='/again'>
-    <input type='radio', name='yes_or_no', value="yes", checked/>Yes
-    <input type='radio', name='yes_or_no', value="no"/>No
-    <br/>
-    <input type='submit', class='btn' />
+  <input type='radio', name='yes_or_no', value="yes", checked/>Yes
+  <input type='radio', name='yes_or_no', value="no"/>No
+  <br/>
+  <input type='submit', class='btn' />
 </form>
