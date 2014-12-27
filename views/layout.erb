@@ -11,12 +11,15 @@
       <div class="navbar-inner">
         <div class="container">
             <ul class="nav">
-              <li><a href="/">
-                <% unless session[:user_name] == '' %>
-                 <%= session[:user_name] %>'s cash: $<%=session[:bank] %>
-                <% else %>
+                <li><a href="/">
+                <% if !session[:user_name] %>
                   Welcome!
+                <% else %>
+                 <%= session[:user_name] %>'s cash: $<%=session[:bank] %>
                 <% end %>
+                </a></li>
+                <li><a href="/">
+                  <% session.clear %>Start over
                 </a></li>
             </ul>
         </div>
