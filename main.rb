@@ -92,6 +92,17 @@ def dealer_blackjack?
   session[:dealer_hand].size == 2 && session[:dealer_total] == 21
 end
 
+helpers do
+  def image_helper(card)
+    if card == "back"
+      "<img src='/images/cards/cover.jpg'>"
+    else
+      "<img src='/images/cards/#{card[1].downcase}_#{card[0].downcase}.jpg'>"
+    end
+  end
+end
+
+
 def find_winner
   if player_bust? || dealer_blackjack?
     "Dealer"

@@ -1,4 +1,5 @@
-Dealer's hand: <%= session[:dealer_hand].first %>
+Dealer's hand: <%= #image_helper(session[:dealer_hand].first) %>
+               <%= image_helper("back") %>
 <br/>
 <br/>
 Player's hand: <%= session[:player_hand] %>
