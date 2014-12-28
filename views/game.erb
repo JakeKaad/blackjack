@@ -1,11 +1,15 @@
-Dealer's hand: <%= #image_helper(session[:dealer_hand].first) %>
-               <%= image_helper("back") %>
-<br/>
-<br/>
-Player's hand: <%= session[:player_hand] %>
-Player's total: <%= session[:player_total] %>
-
-
+<div class='well'>
+	<h5>Dealer's hand:</h5>
+	<%= image_source(session[:dealer_hand].first) %>
+  <img src='images/cards/cover.jpg' class='card_image'/>
+</div>
+<div class='well'>
+	<h5>Player's hand:</h5>
+	<% session[:player_hand].each do |card| %>
+	  <%= image_source(card) %>
+	<% end %>
+</div>
+<h6>Player's total: <%= session[:player_total] %></h6>
 <form action="/hit_or_stay", method='post'>
   <input type='radio', name='hit_or_stay', value='hit', checked/>Hit
   <input type='radio', name='hit_or_stay', value='stay'/>Stay

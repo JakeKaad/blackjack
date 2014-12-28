@@ -1,0 +1,16 @@
+body {
+	background: #d3d3d3;
+}
+
+.well {
+	position: relative;
+	height: 175px;
+	width: 600px;
+	background-color: #00cc00;
+}
+
+.card_image {
+	height: 125px;
+	border: 2px solid black;
+	border-radius: 8%;
+}

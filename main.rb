@@ -33,27 +33,6 @@ def place_bet
   session[:bank] -= session[:bet]
 end
 
-def calculate_total(hand)
-  total = 0
-  
-  card_values = hand.map { |card| card[0] }
-  
-  card_values.each do |value|
-    if value == "Ace"
-      total += 11
-    elsif value.to_i == 0
-      total += 10
-    else
-      total += value.to_i
-    end
-  end
-  
-  card_values.select{ |val| val == "Ace"}.count.times do
-    total -= 10 if total > 21
-  end
-  total
-end
-
 def evaluate_totals(player_hand, dealer_hand)
   session[:player_total] = calculate_total(player_hand)
   session[:dealer_total] = calculate_total(dealer_hand)
@@ -93,12 +72,29 @@ def dealer_blackjack?
 end
 
 helpers do
-  def image_helper(card)
-    if card == "back"
-      "<img src='/images/cards/cover.jpg'>"
-    else
-      "<img src='/images/cards/#{card[1].downcase}_#{card[0].downcase}.jpg'>"
+  def image_source(card)
+    "<img src='/images/cards/" + card[1].to_s + "_" + card[0].to_s + ".jpg' class='card_image' />"
+  end
+
+  def calculate_total(hand)
+    total = 0
+    
+    card_values = hand.map { |card| card[0] }
+    
+    card_values.each do |value|
+      if value == "Ace"
+        total += 11
+      elsif value.to_i == 0
+        total += 10
+      else
+        total += value.to_i
+      end
     end
+    
+    card_values.select{ |val| val == "Ace"}.count.times do
+      total -= 10 if total > 21
+    end
+    total
   end
 end
 
@@ -166,9 +162,19 @@ get '/dealer_turn' do
   erb :dealer_turn
 end
 
+post '/dealer_hit' do
+  if session[:dealer_total] < 17
+    session[:new_dealer_card] = session[:deck].pop
+    session[:dealer_hand] << session[:new_dealer_card]
+    redirect '/game'
+  else
+    redirect '/find_winner'
+  end
+end
+
 get '/find_winner' do
   session[:winner] = find_winner
-  session[:bank] += (session[:bet] * 2) if session[:winner] == session[:user_name]
+  (session[:bank] += (session[:bet] * 2)) if session[:winner] == session[:user_name]
   redirect '/game_over'
 end
 
@@ -176,15 +182,7 @@ get '/game_over' do
   erb :game_over
 end
 
-post '/dealer_hit' do
-  if session[:dealer_total] < 17
-    session[:new_dealer_card] = session[:deck].pop
-    session[:dealer_hand] << session[:new_dealer_card]
-    redirect '/game'
-  else
-    redirect '/game_over'
-  end
-end
+
 
 post '/again' do
   if params[:yes_or_no] == "no"

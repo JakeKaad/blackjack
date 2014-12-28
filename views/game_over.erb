@@ -1,14 +1,19 @@
-Dealer's hand: <%= session[:dealer_hand] %>
-Dealer's total: <%= session[:dealer_total] %>
-<br/>
-<br/>
-Player's hand: <%= session[:player_hand] %>
-Player's total: <%= session[:player_total] %>
-<br/>
-<br/>
-Would you like to play again?
-<br/>
+<div class='well'>
+	<h5>Dealer's hand:</h5>
+	<% session[:dealer_hand].each do |card| %>
+		<%= image_source(card) %>
+	<% end %>
+</div>
+<h6>Dealer's total: <%= session[:dealer_total] %></h6>
+<div class='well'>
+	<h5>Player's hand:</h5> 	
+	<% session[:player_hand].each do |card| %>
+		<%= image_source(card) %>
+	<% end %>
+</div>
+<h6>Player's total: <%= session[:player_total] %></h6>
 <%= session[:winner] %> wins!
+Would you like to play again?
 <form method='post', action='/again'>
   <input type='radio', name='yes_or_no', value="yes", checked/>Yes
   <input type='radio', name='yes_or_no', value="no"/>No
