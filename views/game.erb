@@ -1,3 +1,8 @@
+<form action="/hit_or_stay", method='post'>
+  <input type='radio', name='hit_or_stay', value='hit', checked/>Hit
+  <input type='radio', name='hit_or_stay', value='stay'/>Stay
+  <input type='submit', class='btn btn-primary', value= "Continue"></input>
+</form>
 <div class='well'>
 	<h5>Dealer's hand:</h5>
 	<%= image_source(session[:dealer_hand].first) %>
@@ -11,9 +16,3 @@
 	<h6 class="total">Player's total: <%= session[:player_total] %></h6>
 </div>
 
-<form action="/hit_or_stay", method='post'>
-  <input type='radio', name='hit_or_stay', value='hit', checked/>Hit
-  <input type='radio', name='hit_or_stay', value='stay'/>Stay
-  <br/>
-  <input type='submit', class='btn'></input>
-</form>

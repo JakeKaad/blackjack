@@ -136,6 +136,11 @@ get '/bet' do
 end
 
 post '/place_bet' do
+  require_user_name
+  unless params[:bet].to_i.to_s == params[:bet]
+    @error = "Please enter a valid number"
+    halt erb :bet
+  end
   session[:bet] = params[:bet].to_i
   place_bet
   redirect '/game'
@@ -166,10 +171,15 @@ get '/start_over' do
 end
 
 get '/dealer_turn' do
-  if session[:dealer_hand].size ==2
-    @error = "The dealer reveals his card"
+  require_user_name
+  if dealer_blackjack?
+    @error = "The dealer hit blackjack!"
+    sleep 4
+    redirect '/game_over'
   elsif session[:dealer_total] > 17
-    @error = "The dealer stays"
+    @error = "The dealer stays at #{session[:dealer_total]}."
+  elsif session[:dealer_hand].size ==2
+    @error = "The dealer reveals his card"
   end
   erb :dealer_turn
 end
@@ -185,20 +195,25 @@ post '/dealer_hit' do
 end
 
 get '/find_winner' do
+  require_user_name
   session[:winner] = find_winner
   (session[:bank] += (session[:bet] * 2)) if session[:winner] == session[:user_name]
   redirect '/game_over'
 end
 
 get '/game_over' do
+  require_user_name
   if session[:winner] == session[:user_name]
-    msg = "#{session[:user_name]} wins!\r"
+    msg = "#{session[:user_name]} wins with #{session[:player_total]}.\r"
     (msg = msg + "#{session[:user_name]} hit Blackjack!\r") if blackjack?
+    (msg = "The dealer busted!\r" + msg) if dealer_bust?
     @success = msg + "$#{session[:bet] * 2} added to the bank"
   elsif player_bust? 
-    @error = "#{session[:user_name]} busted!\r $#{session[:bet]} lost!"
+    @error = "#{session[:user_name]} busted.\r $#{session[:bet]} lost!"
+  elsif dealer_blackjack?
+    @error = "The dealer hit Blackjack.\r $#{session[:bet]} lost!"
   else
-    @error = "The dealer wins!\r#${session[:bet]} lost!"
+    @error = "The dealer wins with #{session[:dealer_total]}.\r$#{session[:bet]} lost!"
   end
     
   erb :game_over
