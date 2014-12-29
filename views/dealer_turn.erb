@@ -3,15 +3,15 @@
 	<% session[:dealer_hand].each do |card| %>
 		<%= image_source(card) %>
 	<% end %>
+	<h6 class='total'>Dealer's total: <%= session[:dealer_total] %></h6>
 </div>
-<h6>Dealer's total: <%= session[:dealer_total] %></h6>
 <div class='well'>
 	<h5>Player's hand:</h5> 	
 	<% session[:player_hand].each do |card| %>
 		<%= image_source(card) %>
 	<% end %>
+	<h6 class='total'>Player's total: <%= session[:player_total] %></h6>
 </div>
-<h6>Player's total: <%= session[:player_total] %></h6>
 <h5>See the dealer's next card</h5>
 <form action="/dealer_hit", method="post">
     <input type="submit" name="hit">

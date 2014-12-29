@@ -1,34 +1,42 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>My First App</title>
+    <title>Jake's Blackjack App</title>
     <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/application.css">
   </head>
   <body style="padding-top: 50px;">
 
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-            <ul class="nav">
-                <li><a href="/">
-                <% if !session[:user_name] %>
-                  Welcome!
-                <% else %>
-                 <%= session[:user_name] %>'s cash: $<%=session[:bank] %>
-                <% end %>
-                </a></li>
-                <li><a href="/start_over">
-                  Start over
-                </a></li>
-            </ul>
-        </div>
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <span class='logo'>Blackjack</span>
+        <ul class="nav">
+          <li>
+            <a href="/">
+              <% if !session[:user_name] %>
+                Welcome!
+              <% else %>
+                <%= session[:user_name] %>'s bank: $<%=session[:bank] %>
+              <% end %>
+            </a>
+          </li>
+          <li>
+            <a href="/start_over">
+              Start over
+            </a>
+          </li>
+        </ul>
       </div>
     </div>
+  </div>
 
   <div class="container">
     <%if @error %>
       <div class="alert alert-error"><%=@error%></div>
+    <% end %>
+    <% if @success %>
+      <div class="alert alert-success"><%=@success%></div>
     <% end %>
       <%= yield %>
   </div>

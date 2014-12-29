@@ -14,3 +14,18 @@ body {
 	border: 2px solid black;
 	border-radius: 8%;
 }
+
+.total {
+	margin: 5px 0px 5px 0px;
+}
+
+.logo {
+	float: left;
+	padding-left: -200px;
+	margin-right: 100px;
+	margin-top: 10px;
+	font-weight: 800;
+	font-size: 24px;
+	letter-spacing: -2px;
+	font: sans-serif;
+}

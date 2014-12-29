@@ -8,8 +8,9 @@
 	<% session[:player_hand].each do |card| %>
 	  <%= image_source(card) %>
 	<% end %>
+	<h6 class="total">Player's total: <%= session[:player_total] %></h6>
 </div>
-<h6>Player's total: <%= session[:player_total] %></h6>
+
 <form action="/hit_or_stay", method='post'>
   <input type='radio', name='hit_or_stay', value='hit', checked/>Hit
   <input type='radio', name='hit_or_stay', value='stay'/>Stay

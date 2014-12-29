@@ -55,12 +55,20 @@ def game_over
   redirect '/'
 end
 
+def bust?(total)
+  total > 21
+end
+
 def either_players_bust?
-  session[:player_total] > 21 || session[:dealer_total] > 21
+  player_bust? || dealer_bust?
 end
 
 def player_bust?
-  session[:player_total] > 21
+  bust?(session[:player_total])
+end
+
+def dealer_bust?
+  bust?(session[:dealer_total])
 end
   
 def blackjack?
@@ -73,7 +81,7 @@ end
 
 helpers do
   def image_source(card)
-    "<img src='/images/cards/" + card[1].to_s + "_" + card[0].to_s + ".jpg' class='card_image' />"
+    "<img src='/images/cards/" + card[1] + "_" + card[0].to_s + ".jpg' class='card_image' />"
   end
 
   def calculate_total(hand)
@@ -98,11 +106,10 @@ helpers do
   end
 end
 
-
 def find_winner
   if player_bust? || dealer_blackjack?
     "Dealer"
-  elsif blackjack? || either_players_bust?
+  elsif blackjack? || dealer_bust?
     session[:user_name]
   elsif session[:dealer_total] >= session[:player_total]
     "Dealer"
@@ -159,6 +166,11 @@ get '/start_over' do
 end
 
 get '/dealer_turn' do
+  if session[:dealer_hand].size ==2
+    @error = "The dealer reveals his card"
+  elsif session[:dealer_total] > 17
+    @error = "The dealer stays"
+  end
   erb :dealer_turn
 end
 
@@ -179,6 +191,16 @@ get '/find_winner' do
 end
 
 get '/game_over' do
+  if session[:winner] == session[:user_name]
+    msg = "#{session[:user_name]} wins!\r"
+    (msg = msg + "#{session[:user_name]} hit Blackjack!\r") if blackjack?
+    @success = msg + "$#{session[:bet] * 2} added to the bank"
+  elsif player_bust? 
+    @error = "#{session[:user_name]} busted!\r $#{session[:bet]} lost!"
+  else
+    @error = "The dealer wins!\r#${session[:bet]} lost!"
+  end
+    
   erb :game_over
 end
 
