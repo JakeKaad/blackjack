@@ -4,7 +4,7 @@ body {
 
 .well {
 	position: relative;
-	height: 175px;
+	height: 200px;
 	width: 600px;
 	background-color: #00cc00;
 }
@@ -13,10 +13,11 @@ body {
 	height: 125px;
 	border: 2px solid black;
 	border-radius: 8%;
+	margin-bottom: -9px;
 }
 
 .total {
-	margin: 5px 0px 5px 0px;
+	float: right;
 }
 
 .logo {
@@ -32,4 +33,10 @@ body {
 
 .radio {
 	margin-bottom: 3px;
+}
+
+#dealer_hit_button {
+	float: left;
+	position: relative;
+
 }

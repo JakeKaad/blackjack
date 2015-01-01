@@ -139,7 +139,7 @@ post '/place_bet' do
   require_user_name
   unless params[:bet].to_i.to_s == params[:bet]
     @error = "Please enter a valid number"
-    halt erb :bet
+    halt erb :game
   end
   session[:bet] = params[:bet].to_i
   place_bet
@@ -155,10 +155,11 @@ get '/game' do
   erb :game
 end
 
-post '/hit_or_stay' do
+post '/game/player/hit_or_stay'do
   if params[:hit_or_stay] == "hit"
     session[:player_hand] << session[:deck].pop
-    redirect '/game'
+    evaluate_totals(session[:player_hand], session[:dealer_hand])
+    erb :game, layout: false
   else
     session[:dealer_turn] = true
     redirect '/dealer_turn'
@@ -181,14 +182,15 @@ get '/dealer_turn' do
   elsif session[:dealer_hand].size ==2
     @error = "The dealer reveals his card"
   end
-  erb :dealer_turn
+  erb :game, layout: false
 end
 
-post '/dealer_hit' do
+post '/dealer/hit' do
   if session[:dealer_total] < 17
     session[:new_dealer_card] = session[:deck].pop
     session[:dealer_hand] << session[:new_dealer_card]
-    redirect '/game'
+    evaluate_totals(session[:player_hand], session[:dealer_hand])
+    erb :game, layout: false
   else
     redirect '/find_winner'
   end
@@ -203,6 +205,7 @@ end
 
 get '/game_over' do
   require_user_name
+  @game_over = true
   if session[:winner] == session[:user_name]
     msg = "#{session[:user_name]} wins with #{session[:player_total]}.\r"
     (msg = msg + "#{session[:user_name]} hit Blackjack!\r") if blackjack?
@@ -216,7 +219,7 @@ get '/game_over' do
     @error = "The dealer wins with #{session[:dealer_total]}.\r$#{session[:bet]} lost!"
   end
     
-  erb :game_over
+  erb :game
 end
 
 

@@ -1,18 +1,51 @@
-<form action="/hit_or_stay", method='post'>
-  <input type='radio', name='hit_or_stay', value='hit', checked/>Hit
-  <input type='radio', name='hit_or_stay', value='stay'/>Stay
-  <input type='submit', class='btn btn-primary', value= "Continue"></input>
-</form>
-<div class='well'>
-	<h5>Dealer's hand:</h5>
-	<%= image_source(session[:dealer_hand].first) %>
-  <img src='images/cards/cover.jpg' class='card_image'/>
-</div>
-<div class='well'>
-	<h5>Player's hand:</h5>
-	<% session[:player_hand].each do |card| %>
-	  <%= image_source(card) %>
+<div id='game'>
+	
+	<div class='well'>
+		<h5>Dealer's hand:</h5>
+		<% if session[:dealer_turn] %>
+		<% session[:dealer_hand].each do |card| %>
+				<%= image_source(card) %>
+			<% end %>
+			<h6 class='total'>Dealer's total: <%= session[:dealer_total] %></h6>
+			<div>
+				<% if session[:dealer_turn] && !@game_over %>
+					<form id="dealer_form" action="/dealer/hit", method="post" >
+				    <input type="submit" class='btn btn-primary', name="hit", value="Continue", id='dealer_hit_button'>
+					</form>
+				<% end %>
+			</div>
+		<% else %>
+		<%= image_source(session[:dealer_hand].first) %>
+		 <img src='images/cards/cover.jpg' class='card_image'/>
+		<% end %>
+	</div>
+	
+
+		<div class='well'>
+			<h5>Player's hand:</h5>
+			<% session[:player_hand].each do |card| %>
+			  <%= image_source(card) %>
+			<% end %>
+			<h6 class="total">Player's total: <%= session[:player_total] %></h6>
+		</div>
+
+	<% unless session[:dealer_turn] || @game_over %>
+		<form id="player_form" action="/game/player/hit_or_stay", method='post'>
+		  <input type='radio', name='hit_or_stay', value='hit', checked/>Hit
+		  <input type='radio', name='hit_or_stay', value='stay'/>Stay
+		  <input type='submit', class='btn btn-primary', value= "Continue", id-'player_hit_button'></input>
+		</form>
 	<% end %>
-	<h6 class="total">Player's total: <%= session[:player_total] %></h6>
+	<% if @game_over %>
+		Would you like to play again?
+		<form method='post', action='/again'>
+		  <input type='radio', name='yes_or_no', value="yes", checked/>Yes
+		  <input type='radio', name='yes_or_no', value="no"/>No
+		  <input type='submit', class='btn btn-primary' />
+		</form>
+	<% end %>
 </div>
+
+
+
 
