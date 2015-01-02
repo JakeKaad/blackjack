@@ -163,7 +163,7 @@ end
 
 post '/game/player/stay' do
   session[:dealer_turn] = true
-  redirect '/dealer_turn'
+  redirect '/game/dealer_turn'
 end
 
 get '/start_over' do
@@ -171,7 +171,7 @@ get '/start_over' do
   redirect '/'
 end
 
-get '/dealer_turn' do
+get '/game/dealer_turn' do
   require_user_name
   if dealer_blackjack?
     @error = "The dealer hit blackjack!"
@@ -185,7 +185,7 @@ get '/dealer_turn' do
   erb :game, layout: false
 end
 
-post '/dealer/hit' do
+post '/game/dealer/hit' do
   if session[:dealer_total] < 17
     session[:new_dealer_card] = session[:deck].pop
     session[:dealer_hand] << session[:new_dealer_card]
