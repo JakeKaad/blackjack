@@ -148,7 +148,7 @@ end
 
 get '/game' do
   require_user_name
-  deal_opening_hands
+  deal_opening_hands if session[:player_hand].empty?
   evaluate_totals(session[:player_hand], session[:dealer_hand])
   redirect '/find_winner' if blackjack?
   erb :game
@@ -179,6 +179,7 @@ get '/game/dealer_turn' do
     redirect '/game_over'
   elsif session[:dealer_total] > 17
     @error = "The dealer stays at #{session[:dealer_total]}."
+    redirect '/game_over'
   elsif session[:dealer_hand].size ==2
     @error = "The dealer reveals his card"
   end
