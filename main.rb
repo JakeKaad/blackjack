@@ -198,6 +198,7 @@ end
 
 get '/find_winner' do
   require_user_name
+  evaluate_totals(session[:player_hand], session[:dealer_hand])
   session[:winner] = find_winner
   (session[:bank] += (session[:bet] * 2)) if session[:winner] == session[:user_name]
   redirect '/game_over'
