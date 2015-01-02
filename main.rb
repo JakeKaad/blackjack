@@ -139,7 +139,7 @@ post '/place_bet' do
   require_user_name
   unless params[:bet].to_i.to_s == params[:bet]
     @error = "Please enter a valid number"
-    halt erb :game
+    halt erb :bet
   end
   session[:bet] = params[:bet].to_i
   place_bet
@@ -148,22 +148,22 @@ end
 
 get '/game' do
   require_user_name
-  deal_opening_hands if session[:player_hand].empty?
+  deal_opening_hands
   evaluate_totals(session[:player_hand], session[:dealer_hand])
-  redirect '/find_winner' if players_finished? || either_players_bust? || blackjack?
-  redirect '/dealer_turn' if session[:dealer_turn]
+  redirect '/find_winner' if blackjack?
   erb :game
 end
 
-post '/game/player/hit_or_stay'do
-  if params[:hit_or_stay] == "hit"
-    session[:player_hand] << session[:deck].pop
-    evaluate_totals(session[:player_hand], session[:dealer_hand])
-    erb :game, layout: false
-  else
-    session[:dealer_turn] = true
-    redirect '/dealer_turn'
-  end
+post '/game/player/hit' do
+  session[:player_hand] << session[:deck].pop
+  evaluate_totals(session[:player_hand], session[:dealer_hand])
+  redirect'/find_winner' if player_bust?
+  erb :game, layout: false
+end
+
+post '/game/player/stay' do
+  session[:dealer_turn] = true
+  redirect '/dealer_turn'
 end
 
 get '/start_over' do
