@@ -1,4 +1,4 @@
-$$(document).ready(function(){
+$(document).ready(function(){
   player_hit();
   player_stay();
   dealer_hit();
@@ -6,7 +6,6 @@ $$(document).ready(function(){
 
 function player_hit() {
   $(document).on("click", "#hit_form input", function() {
-    alert("player hits!");
     $.ajax({
       type: 'POST',
       url: '/game/player/hit'

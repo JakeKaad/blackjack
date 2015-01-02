@@ -3,6 +3,6 @@
 		<%= image_source(card) %>
 <% end %>
 <h6 class="total">Dealer's total: <%= session[:dealer_total] %></h6>
-<form action='/game/dealer/hit' method='post'>
-  <input id="dealer_hit" type='submit' class='btn btn-primary' value='Continue'>
+<form id="dealer_hit" action='/game/dealer/hit' method='post'>
+  <input type='submit' class='btn btn-primary' value='Continue'>
 </form>
