@@ -207,6 +207,7 @@ end
 
 get '/game_over' do
   require_user_name
+  session[:dealer_turn] = false
   @game_over = true
   if session[:winner] == session[:user_name]
     msg = "#{session[:user_name]} wins with #{session[:player_total]}.\r"
