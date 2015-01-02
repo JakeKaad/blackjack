@@ -81,7 +81,7 @@ end
 
 helpers do
   def image_source(card)
-    "<img src='/images/cards/" + card[1] + "_" + card[0].to_s + ".jpg' class='card_image' />"
+    "<img src='/images/cards/" + card[1].downcase + "_" + card[0].to_s.downcase + ".jpg' class='card_image' />"
   end
 
   def calculate_total(hand)
