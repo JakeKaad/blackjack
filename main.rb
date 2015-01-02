@@ -11,7 +11,7 @@ def require_user_name
 end
 
 def has_user_name?
-  !!session[:user_name]
+  session[:user_name]
 end
 
 def create_deck
@@ -192,6 +192,7 @@ post '/game/dealer/hit' do
     evaluate_totals(session[:player_hand], session[:dealer_hand])
     erb :game, layout: false
   else
+    session[:dealer_turn] = false
     redirect '/find_winner'
   end
 end
