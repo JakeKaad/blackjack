@@ -92,7 +92,7 @@ helpers do
     card_values.each do |value|
       if value == "Ace"
         total += 11
-      elsif value.to_i == 0
+      elsif value == "Jack" || value == "Queen" || value == "King"
         total += 10
       else
         total += value.to_i
