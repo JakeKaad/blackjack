@@ -1,21 +1,4 @@
-Would you like to play again?
-<form method='post', action='/again'>
-  <input type='radio', name='yes_or_no', value="yes", checked/>Yes
-  <input type='radio', name='yes_or_no', value="no"/>No
-  <input type='submit', class='btn btn-primary' />
-</form>
-<div class='well'>
-	<h5>Dealer's hand:</h5>
-	<% session[:dealer_hand].each do |card| %>
-		<%= image_source(card) %>
-	<% end %>
-	<h6 class ='total'>Dealer's total: <%= session[:dealer_total] %></h6>
-</div>
-
-<div class='well'>
-	<h5>Player's hand:</h5> 	
-	<% session[:player_hand].each do |card| %>
-		<%= image_source(card) %>
-	<% end %>
-	<h6 class='total'>Player's total: <%= session[:player_total] %></h6>
-</div>
+<% session[:dealer_hand].each do |card| %>
+	<%= image_source(card) %>
+<% end %>
+<h6 class="total">Dealer's total: <%= session[:dealer_total] %></h6>

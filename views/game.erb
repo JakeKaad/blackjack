@@ -3,11 +3,9 @@
 	<div class='well'>
 		<h5>Dealer's hand:</h5>
 		<% if session[:dealer_turn] %>
-			 <%= erb :dealer_turn %>
+			<%= erb :dealer_turn %>
 		<% elsif @game_over %>
-			<% session[:dealer_hand].each do |card| %>
-				<%= image_source(card) %>
-			<% end %>
+			<%= erb :game_over %>
 		<% else %>	
 			<%= image_source(session[:dealer_hand].first) %>
 		 	<img src='images/cards/cover.jpg' class='card_image'/>
