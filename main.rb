@@ -109,9 +109,9 @@ end
 def find_winner
   if player_bust? || dealer_blackjack?
     "Dealer"
-  elsif blackjack? || dealer_bust? || (session[:dealer_total] > session[:player_total])
+  elsif blackjack? || dealer_bust? || (session[:dealer_total] < session[:player_total])
     session[:user_name]
-  elsif session[:dealer_total] <= session[:player_total]
+  elsif session[:dealer_total] >= session[:player_total]
     "Dealer"
   end
 end
